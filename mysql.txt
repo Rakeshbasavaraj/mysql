@@ -1,0 +1,101 @@
+#creating database
+	
+	create database rakesh;
+#using the created database
+	use rakesh;
+#creating table physicians
+
+	create table physicians(id int(10), name varchar(20), password varchar(10));
+	Query OK, 0 rows affected (0.18 sec)
+#insering valuse to the above created table physician
+	
+	$ insert into physicians values('01','rakesh','123');
+	Query OK, 1 row affected (0.04 sec)
+	
+	$ mysql> select * from physicians;
+	/*output will be 
++------+--------+----------+
+| id   | name   | password |
++------+--------+----------+
+|    1 | rakesh | 123      |
++------+--------+----------+
+1 row in set (0.00 sec)*/
+
+#creating patients table
+
+$ create table patients( id int(10), personalno int (20), primary key(personalno),firstname varchar(30),secondname varchar(30), sex varchar(10),dateofbirth varchar(20), placeofbirth varchar(20) ,placeofresidence varchar(30),physician varchar(10), foreign key(physician) references physicians(name));
+Query OK, 0 rows affected (0.28 sec)
+ 
+
+ #inserting values to the table patients;
+  $ insert into patients values('001','1234567','rakesh','basavaraj','male','23june','chitradurga','cta ksrtc layout','rakesh');
+Query OK, 1 row affected (0.04 sec)
+mysql> select * from patients;
++------+------------+-----------+------------+------+-------------+--------------+------------------+-----------+
+| id   | personalno | firstname | secondname | sex  | dateofbirth | placeofbirth | placeofresidence | physician |
++------+------------+-----------+------------+------+-------------+--------------+------------------+-----------+
+|    1 |    1234567 | rakesh    | basavaraj  | male | 23june      | chitradurga  | cta ksrtc layout | rakesh    |
++------+------------+-----------+------------+------+-------------+--------------+------------------+-----------+
+1 row in set (0.00 sec)
+
+#creating consultation table
+
+ $ create table consultation( idconsultation int(10),  personalno int(20), dateofconsultation varchar(30), weight int(10), height int(10), diagnostic varchar(30), selectedbones varchar(30), realscore varchar(30), maturityscore varchar (30), boneage varchar(30), physician varchar(30), foreign key(personalno) references patients(personalno), foreign key(physician) references physicians(name), primary key(diagnostic));
+Query OK, 0 rows affected (0.25 sec)
+
+
+#inserting the data to the consultation table
+insert into consultation values('111','1234567','23sept','63','5','bone','facial','20','15','21','rakesh');Query OK, 1 row affected (0.04 sec)
+
+
+#displaying the table
+select * from consultation;
+/*output will be
++----------------+------------+--------------------+--------+--------+------------+---------------+-----------+---------------+---------+-----------+
+| idconsultation | personalno | dateofconsultation | weight | height | diagnostic | selectedbones | realscore | maturityscore | boneage | physician |
++----------------+------------+--------------------+--------+--------+------------+---------------+-----------+---------------+---------+-----------+
+|            111 |    1234567 | 23sept             |     63 |      5 | bone       | facial        | 20        | 15            | 21      | rakesh    |
++----------------+------------+--------------------+--------+--------+------------+---------------+-----------+---------------+---------+-----------+
+
+*/
+
+#create bone table
+
+mysql> create table bones(id varchar(10),bone varchar(30), stage varchar(30), text varchar(20),primary key(bone), foreign key(stage) references consultation(diagnostic));
+Query OK, 0 rows affected (0.22 sec)
+
+#insert values to bone table
+
+mysql> insert into bones values('1','facial','bone','factured');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select * from bones;
+/* output display
++------+--------+-------+----------+
+| id   | bone   | stage | text     |
++------+--------+-------+----------+
+| 1    | facial | bone  | factured |
++------+--------+-------+----------+
+1 row in set (0.00 sec)
+*/
+#create bonestage table
+mysql> create table bonestage(id varchar(30),name varchar(30),stages varchar(30), foreign key(id) references consultation(diagnostic));
+Query OK, 0 rows affected (0.21 sec)
+
+#insert values
+mysql> insert into bonestage values('bone','elbow','first stage');
+Query OK, 1 row affected (0.04 sec)
+
+#to display table
+mysql> select * from bonestage;
+/*display will be
++------+-------+-------------+
+| id   | name  | stages      |
++------+-------+-------------+
+| bone | elbow | first stage |
++------+-------+-------------+
+1 row in set (0.00 sec)
+*/
+
+
+
